@@ -14,7 +14,18 @@ public class ClassForScene5 {
         return mValue % 2 != 0;
     }
 
+    public static void testPublic(){
+        doPublicSomething();
+    }
+
     private static void doSomething(){
         //随便干点啥事吧
     }
+
+    public static void doPublicSomething(){
+
+    }
+
+    private static void doNothing(){}
+
 }
