@@ -7,10 +7,10 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import base.TestInit;
 import classDefine.EnumClass;
-import utils.MockUtils;
 
 /**
  * Created by cb on 2016/5/20.
@@ -20,8 +20,9 @@ import utils.MockUtils;
 public class MockEnumClass extends TestInit{
     @Test
     public void testMockEnumClass() throws Exception{
-        MockUtils.mockEnumInstance(EnumClass.class);
-        PowerMockito.when(EnumClass.INSTANCE.getValue()).thenReturn(-1);
+        EnumClass mock = PowerMockito.mock(EnumClass.class);
+        PowerMockito.when(mock.getValue()).thenReturn(-1);
+        Whitebox.setInternalState(mock, "INSTANCE", mock, EnumClass.class);
         Assert.assertTrue(EnumClass.INSTANCE.getValue() == -1);
     }
 
@@ -31,6 +32,8 @@ public class MockEnumClass extends TestInit{
         PowerMockito.spy(EnumClass.INSTANCE);
         PowerMockito.when(EnumClass.INSTANCE.getValue()).thenReturn(-1);
         Assert.assertTrue(EnumClass.INSTANCE.getValue() == -1);
+        PowerMockito.when(EnumClass.INSTANCE.getValue()).thenReturn(100);
+        Assert.assertTrue(EnumClass.INSTANCE.getValue() == 100);
     }
 
 

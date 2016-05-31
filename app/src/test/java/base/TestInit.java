@@ -1,29 +1,37 @@
 package base;
 
-import android.text.TextUtils;
-import android.util.Log;
+import android.content.Context;
 
-import org.junit.Before;
+import com.carefree.unittestdemo.BuildConfig;
+
+import org.junit.Rule;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunnerDelegate;
+import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowApplication;
 
 /**
  * Created by cb on 2016/5/26.
  */
+//第一，在PowerMock与Robolectric共用的情况下，主的Runner应该是PowerMock,
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({TextUtils.class})
+//第二, 需要做这个代理，把某些操作代理给RobolectricGradleTestRunner
+@PowerMockRunnerDelegate(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 21)
+//第三，ignore掉某些包，具体不清楚原因。
+@PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
 public class TestInit {
-    @Before
-    public void setUp() throws Exception{
-        PowerMockito.mockStatic(TextUtils.class);
-        Object[] argsEmpty = new Object[1];
-        argsEmpty[0] = "";
-        PowerMockito.when(TextUtils.class,"isEmpty","").thenReturn(true);
-        Object[] args = new Object[1];
-        args[0] = null;
-        PowerMockito.when(TextUtils.class,"isEmpty",args).thenReturn(true);
-        PowerMockito.mockStatic(Log.class);
+
+    //非常重要：这个Rule要声明，我不知道这个Rule是干嘛用的，但是不定义这个变量。也是没办法混用的。
+    @Rule
+    public PowerMockRule rule = new PowerMockRule();
+
+    protected Context getContext(){
+        ShadowApplication shadowApplication = ShadowApplication.getInstance();
+        return shadowApplication.getApplicationContext();
     }
 }

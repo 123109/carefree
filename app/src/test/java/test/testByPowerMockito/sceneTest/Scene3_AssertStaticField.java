@@ -4,12 +4,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import classDefine.ClassForScene3;
-import utils.MockUtils;
 
 /**
  * 场景3：确认某个静态类的成员变量的值是我们预期的
@@ -25,22 +23,11 @@ public class Scene3_AssertStaticField {
 
     @Test
     public void tesAssertStaticFieldByPowerMockito() throws Exception{
-        //实际上这个用例是跑不过的，会报以下错误：原因也是这个方法只适用于对象而不适用于类
-        //java.lang.RuntimeException: Unable to set internal state on a private field. Please report to mockito mailing list.
         ClassForScene3.changeValue(10);
-        int value = (int) Whitebox.getInternalState(ClassForScene3.class, "mValue");
-        Assert.assertTrue(value == 10);
-    }
-
-    @Test
-    public void testAssertStaticFieldByLocalUtils() throws Exception{
-        ClassForScene3.changeValue(10);
-        int value = MockUtils.getFromClass(ClassForScene3.class, "mValue");
+        int value = org.powermock.reflect.Whitebox.getInternalState(ClassForScene3.class, "mValue",ClassForScene3.class);
         Assert.assertTrue(value == 10);
         ClassForScene3.changeValue(-10);
-        value = MockUtils.getFromClass(ClassForScene3.class, "mValue");
+        value = org.powermock.reflect.Whitebox.getInternalState(ClassForScene3.class, "mValue", ClassForScene3.class);
         Assert.assertTrue(value == 10);
     }
-
-
 }

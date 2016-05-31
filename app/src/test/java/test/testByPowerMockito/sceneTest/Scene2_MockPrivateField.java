@@ -16,7 +16,7 @@ import classDefine.StaticClass;
  * 场景2：mock一个成员变量。
  * 比如有一个类，这个类里有一个私有的成员变量，这个成员变量只能通过这个类的某些方法来改变，这种情况下，有两个方法来解决：
  * 1.通过spy这个能改变这个成员变量的方法去mock我们想要的值，但是有可能这个方法需要context，或者是其它的依赖，那么就有可能最后Mock出来了，但是为了实现这一mock写几十行的代码；
- * 2.通过powerMockito提供的一个Whitebox.setInternalState方法（在这个场景里，这个方法其实和我们自己的mock工具的方法是一样的）
+ * 2.通过powerMockito提供的一个Whitebox.setInternalState方法
  * Created by cb on 2016/5/20.
  */
 @RunWith(PowerMockRunner.class)

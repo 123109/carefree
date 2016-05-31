@@ -10,7 +10,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import classDefine.ClassForScene1;
 import classDefine.StaticClass;
-import utils.MockUtils;
 
 /**
  * 场景1：mock一个静态的成员变量。
@@ -38,12 +37,4 @@ public class Scene1_MockStaticField {
         org.powermock.reflect.Whitebox.setInternalState(StaticClass.class, "mPrivateValue", 2,StaticClass.class);
         Assert.assertTrue(StaticClass.getMockValue() == 12);
     }
-
-    @Test
-    public void testMockStaticPrivateFieldByLocalUtils() throws Exception{
-        MockUtils.setToStaticField(StaticClass.class, "mPrivateValue", 2);
-        Assert.assertTrue(StaticClass.getMockValue() == 12);
-    }
-
-
 }

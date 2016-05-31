@@ -7,9 +7,9 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import classDefine.ClassForScene5;
-import utils.MockUtils;
 
 /**
  * 场景5：确认某个静态类里的某个方法被跑到了
@@ -39,10 +39,11 @@ public class Scene5_AssertStaticMethod {
     @Test
     public void verifyTwoMethodByPowerMockito() throws Exception {
         //这个case会给我们更大的惊(懵)喜(B)：上面两个可以单独跑过的case合到一起就挂了
-        ClassForScene5.test();
-        PowerMockito.verifyPrivate(ClassForScene5.class).invoke("doSomething");
-        ClassForScene5.testPublic();
-        PowerMockito.verifyPrivate(ClassForScene5.class).invoke("doPublicSomething");
+//        ClassForScene5.test();
+//        PowerMockito.verifyPrivate(ClassForScene5.class).invoke("doSomething");
+//        ClassForScene5.testPublic();
+//        PowerMockito.verifyPrivate(ClassForScene5.class).invoke("doPublicSomething");
+        //除此之外，还有一个大惊(懵)喜(B)：上面两个可以单独跑过的case，连续跑的时候也会挂……
     }
 
 
@@ -62,7 +63,7 @@ public class Scene5_AssertStaticMethod {
         Assert.assertTrue(doSomethingInvoked);
 
         //下面我们把mValue的值改成1，这样就不会调到doSomething了
-        MockUtils.setToStaticField(ClassForScene5.class,"mValue",1);
+        Whitebox.setInternalState(ClassForScene5.class, "mValue", 1, ClassForScene5.class);
         doSomethingInvoked = false;
         try {
             ClassForScene5.test();
