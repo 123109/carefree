@@ -135,6 +135,26 @@ public class MockUtils {
         }
     }
 
+    public static void mockInstanceClass(Class<?> target,Object... constructorParams) throws Exception{
+        Method[] methods = target.getMethods();
+        Object ori = null;
+        for (Method method : methods) {
+            if (method.getReturnType().equals(target) && !method.getName().contains("valueOf")){
+                ori = target.getMethod(method.getName(),method.getParameterTypes()).invoke(target,constructorParams);
+                break;
+            }
+        }
+        Object mock = PowerMockito.mock(target);
+        Field[] fields = target.getDeclaredFields();
+        for (Field field : fields) {
+            if (containsIgnoreCase(field.getName(), "instance")){
+                field.setAccessible(true);
+                field.set(ori,mock);
+                return;
+            }
+        }
+    }
+
     static boolean containsIgnoreCase(String src,String target){
         if (TextUtils.isEmpty(src) || TextUtils.isEmpty(target)){
             return false;
@@ -151,6 +171,17 @@ public class MockUtils {
 
     public static void mockEnumInstance(Class<?> enumClass) throws Exception{
         Object object = PowerMockito.mock(enumClass);
+        Field[] fields = enumClass.getFields();
+        for (Field field : fields) {
+            if (containsIgnoreCase(field.getName(),"instance")){
+                setToStaticField(enumClass,field.getName(),object);
+                return;
+            }
+        }
+    }
+
+    public static void spyEnumInstance(Class<?> enumClass) throws Exception{
+        Object object = PowerMockito.spy(enumClass.newInstance());
         Field[] fields = enumClass.getFields();
         for (Field field : fields) {
             if (containsIgnoreCase(field.getName(),"instance")){

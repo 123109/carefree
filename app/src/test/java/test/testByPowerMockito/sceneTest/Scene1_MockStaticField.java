@@ -4,7 +4,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -36,11 +35,8 @@ public class Scene1_MockStaticField {
 
     @Test
     public void testMockStaticPrivateFieldByPowerMockito() throws Exception{
-        //实际上这个用例是跑不过的，会报以下错误：
-        //java.lang.RuntimeException: Unable to set internal state on a private field. Please report to mockito mailing list.
-        PowerMockito.mockStatic(StaticClass.class);
-        Whitebox.setInternalState(StaticClass.class, "mPrivateValue", 2);
-        PowerMockito.when(StaticClass.getMockValue()).thenReturn(12);
+        org.powermock.reflect.Whitebox.setInternalState(StaticClass.class, "mPrivateValue", 2,StaticClass.class);
+        Assert.assertTrue(StaticClass.getMockValue() == 12);
     }
 
     @Test
