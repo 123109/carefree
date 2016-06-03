@@ -1,11 +1,11 @@
-package test.testByInherit;
+package classDefine;
 
 import java.util.Random;
 
 /**
  * Created by cb on 2016/6/3.
  */
-public class DependencyClass {
+public class ClassForScene14_Dependency {
 
     private boolean mIsValid = false;
 
