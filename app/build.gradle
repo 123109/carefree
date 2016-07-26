@@ -48,4 +48,8 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
     testCompile "org.powermock:powermock-api-mockito:1.6.4"
     testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
+
+    compile'io.reactivex:rxandroid:1.1.0'
+    compile'io.reactivex:rxjava:1.1.0'
+
 }
