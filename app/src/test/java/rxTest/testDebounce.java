@@ -37,6 +37,7 @@ public class testDebounce extends TestInit {
                 }
             }
         }).start();
+        //为当前观察者指定一个阀值，时间是1秒
         subject.debounce(1,TimeUnit.SECONDS).subscribe(new Action1<Long>() {
             @Override
             public void call(final Long aLong) {
