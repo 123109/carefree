@@ -17,7 +17,6 @@ import classDefine.StaticClass;
  * 1.通过spy这个能改变这个成员变量的方法去mock我们想要的值，但是有可能这个方法需要context，或者是其它的依赖，那么就有可能最后Mock出来了，但是为了实现这一mock写几十行的代码；
  * 另外这还有种方法还有可能是没办法mock出每一个我们想要的值
  * 2.通过我们自己的mock工具直接丢一个我们想要的值进去
- * powerMockito提供了一个Whitebox.setInternalState方法，可惜这个方法不能对静态类使用，只能对具体对象用
  * Created by cb on 2016/5/20.
  */
 @RunWith(PowerMockRunner.class)
