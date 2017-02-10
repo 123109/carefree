@@ -35,12 +35,40 @@ public class MockUtils {
         if (tClass == null) {
             throw new MockitoAssertionError("mock对象类不能为空");
         }
-        if (Modifier.isFinal(tClass.getModifiers())){
-            //被模拟的类是个final的，需要确认它是否被mock
-            checkPrepare(tClass);
-        }
+        checkPrepareFinal(tClass);
         T t = PowerMockito.mock(tClass);
         return t;
+    }
+
+    public static void mockStatic(Class<?> tClass){
+        if (tClass == null) {
+            throw new MockitoAssertionError("mock对象类不能为空");
+        }
+        checkPrepare(tClass);
+        PowerMockito.mockStatic(tClass);
+    }
+
+    public static <T> T spy(T t){
+        if (t == null) {
+            throw new MockitoAssertionError("spy对象类不能为空");
+        }
+        checkPrepareFinal(t.getClass());
+        return PowerMockito.spy(t);
+    }
+
+    public static <T> void spy(Class<T> t){
+        if (t == null) {
+            throw new MockitoAssertionError("spy类不能为空");
+        }
+        checkPrepareFinal(t.getClass());
+        PowerMockito.spy(t);
+    }
+
+    private static void checkPrepareFinal(final Class tClass) {
+        if (Modifier.isFinal(tClass.getModifiers())  || tClass.isEnum()){
+            //被模拟的类是个final的，需要确认它是否被prepare
+            checkPrepare(tClass);
+        }
     }
 
     /**
@@ -58,21 +86,6 @@ public class MockUtils {
         }
         PowerMockito.whenNew(willBeNew).withAnyArguments().thenReturn(t);
         return t;
-    }
-
-    /**
-     * @param willBeNew 将要被创建新实例的类
-     * @param callNew 执行创建新实例的代码所在的类，比如在B类里会创建一个A类的实例，那么willBeNew是A，callNew是B
-     * @param t   指定的实例
-     * @param <T>
-     * @throws Exception
-     */
-    public static <T> void whenNewWithSpecifiedObject(Class<T> willBeNew,T t,Class<?> callNew) throws Exception {
-        checkPrepare(willBeNew);
-        if (callNew != null) {
-            checkPrepare(callNew);
-        }
-        PowerMockito.whenNew(willBeNew).withAnyArguments().thenReturn(t);
     }
 
     public static <T> void whenNewWithSpecifiedObject(T t,Class<?> callNew) throws Exception {
@@ -152,11 +165,7 @@ public class MockUtils {
     public static void verifyStatic(int time,Class mock,ICallTestMethod callBack){
         //需要判断被verify的类是不是被prepare的
         checkPrepare(mock);
-        Map<Class<?>, MethodInvocationControl> classMocks = Whitebox.getInternalState(MockRepository.class,"classMocks",MockRepository.class);
-        MockRepository.getMethodProxy(null);
-        if (!classMocks.containsKey(mock)){
-            throw new MockitoAssertionError("verifyStatic之前，要先调用PowerMockito.mockStatic("+mock.getSimpleName()+".class)");
-        }
+        checkStaticMock(mock,"verifyStatic之前");
         PowerMockito.verifyStatic(times(time));
         try {
             callBack.call();
@@ -167,17 +176,18 @@ public class MockUtils {
         }
     }
 
+    public static void checkStaticMock(final Class mock,String tag) {
+        Map<Class<?>, MethodInvocationControl> classMocks = Whitebox.getInternalState(MockRepository.class,"classMocks",MockRepository.class);
+        if (!classMocks.containsKey(mock)){
+            throw new MockitoAssertionError(tag+"，要先调用MockUtils.mockStatic("+mock.getSimpleName()+".class)");
+        }
+    }
+
     public static PrivateMethodVerification verify(Object mock, int times ) throws Exception {
         if (mock == null) {
             throw new MockitoAssertionError("要verify的对象不能为null");
         }
-        if (!isMocked(mock)){
-            //这不是一个被mock的对象
-            String name = mock.getClass().getSimpleName();
-            throw new MockitoAssertionError("\n要verify的对象必须是mock出来或者spy出来的，例如：\n" +
-                    name + " mock = PowerMockito.Mock("+name+".class) 或者\n" +
-                    name + " spy = PowerMockito.Mock(new "+name+"())") ;
-        }
+        checkMocked(mock,"verify");
         return PowerMockito.verifyPrivate(mock,times(times));
     }
 
@@ -190,11 +200,19 @@ public class MockUtils {
         return subscriber;
     }
 
-    public static  <T> OngoingStubbing<T> when(Class clazz, String methodName, Object... arguments) throws Exception {
-        return PowerMockito.when(clazz,methodName,arguments);
+    public static  <T> OngoingStubbing<T> when(Object object, String methodName, Object... arguments) throws Exception {
+        checkMocked(object,"when");
+        checkPrepareFinal(object.getClass());
+        return PowerMockito.when(object,methodName,arguments);
     }
 
-    private static void checkPrepare(final Class mock) {
+    public static void doNothingWhen(Object object, String methodName, Object... arguments) throws Exception{
+        checkMocked(object,"doNothingWhen");
+        checkPrepareFinal(object.getClass());
+        PowerMockito.doNothing().when(object,methodName,arguments);
+    }
+
+    public static void checkPrepare(final Class mock) {
         Class from = getTestOriginClass();
         PrepareForTest test = (PrepareForTest) from.getAnnotation(PrepareForTest.class);
         if (test != null){
@@ -205,7 +223,7 @@ public class MockUtils {
                 }
             }
         }
-        throw new MockitoAssertionError("\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
+        throw new MockitoAssertionError("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
                 "\"@PrepareForTest("+mock.getSimpleName()+".class)\"，\n" +
                 "如果已有该注解，请在注解体里添加"+mock.getSimpleName()+".class");
     }
@@ -213,16 +231,18 @@ public class MockUtils {
     @Nullable
     private static Class getTestOriginClass() {
         StackTraceElement[] trace = new Exception("").getStackTrace();
-        String callOriginClass = null;
-        for (StackTraceElement element : trace) {
+        String testClass = null;
+        final int length = trace.length;
+        for (int i = 0, traceLength = length; i < traceLength; i++) {
+            StackTraceElement element = trace[i];
             String name = element.getClassName();
-            if (!name.equals(MockUtils.class.getName())) {
-                callOriginClass = name;
+            if (name.equals("sun.reflect.NativeMethodAccessorImpl")) {
+                testClass = trace[i- 1].getClassName();
                 break;
             }
         }
         try {
-            Class from = Class.forName(callOriginClass);
+            Class from = Class.forName(testClass);
             return from;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -240,10 +260,16 @@ public class MockUtils {
         }
     }
 
-    private static boolean isMocked(Object object){
+    public static void checkMocked(Object object,String methodName){
         Class clazz = object.getClass();
         ClassLoader classloader = clazz .getClassLoader();
-        return classloader instanceof SearchingClassLoader;
+        if (!(classloader instanceof SearchingClassLoader)){
+            //这不是一个被mock的对象
+            String name = clazz.getSimpleName();
+            throw new MockitoAssertionError("\n\n"+methodName+"方法里的对象必须是mock出来或者spy出来的，例如：\n" +
+                    name + " mock = MockUtils.Mock("+name+".class) 或者\n" +
+                    name + " spy = MockUtils.spy(new "+name+"())") ;
+        }
     }
 
     public interface ICallTestMethod {

@@ -98,6 +98,7 @@ public class TestMockUtils extends TestInit{
 
     @Test
     public void testVerifyMock() throws Exception {
+//        DependencyClass arguments = new DependencyClass();
         DependencyClass arguments = PowerMockito.mock(DependencyClass.class);
         PowerMockito.whenNew(DependencyClass.class).withNoArguments().thenReturn(arguments);
         CallOrigin origin = new CallOrigin();

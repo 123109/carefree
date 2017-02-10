@@ -5,6 +5,17 @@ package test.testMockUtils;
  */
 
 public class DependencyClass {
+
+    public DependencyClass(){
+
+    }
+    public DependencyClass(String s){
+
+    }
+    public DependencyClass(String s,String s1){
+
+    }
+
     public final String one(String input){
         System.out.print(input+"\n");
         return input;

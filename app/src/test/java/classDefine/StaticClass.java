@@ -18,4 +18,8 @@ public class StaticClass {
     public static int getRealValue(){
         return mPrivateValue;
     }
+
+    public static int getRealValue(int input,int in){
+        return mPrivateValue;
+    }
 }
