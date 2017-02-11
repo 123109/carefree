@@ -8,6 +8,7 @@ public class StaticClass {
 
     public static int getMockValue() {
         mPrivateValue = mPrivateValue + 10;
+        privateStatic();
         return mPrivateValue;
     }
 
@@ -21,5 +22,9 @@ public class StaticClass {
 
     public static int getRealValue(int input,int in){
         return mPrivateValue;
+    }
+
+    private static void privateStatic(){
+
     }
 }

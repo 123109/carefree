@@ -1,31 +1,29 @@
 package utils.builder;
 
-import org.powermock.api.mockito.PowerMockito;
+import utils.MockUtils;
 
 /**
  * Created by Administrator on 2017/2/10.
  */
-@Deprecated
-public class CallMethodBuilder{
+
+class CallMethodBuilder<T,E>{
     Object mObject;
-    Object mReturnValue;
-    CallMethodBuilder(Object object) {
+    private E mE;
+    String mMethodName;
+
+    CallMethodBuilder(Object object,E e) {
         mObject = object;
+        mE = e;
+        if (object instanceof Class){
+            //要测试一个静态方法
+            MockUtils.checkStaticMock((Class) object,"调用when方法之前");
+        }else{
+            MockUtils.checkMocked(object,"when");
+        }
     }
 
-    @Deprecated
-    public ReturnBuilder thenReturn(Object value) throws Exception {
-        mReturnValue = value;
-        return new ReturnBuilder(this);
-    }
-
-    @Deprecated
-    void build(){
-        PowerMockito.when(mObject).thenReturn(mReturnValue);
-    }
-
-    @Deprecated
-    void build(Object[] arguments){
-        PowerMockito.when(mObject).thenReturn(mReturnValue,arguments);
+    public E call(String methodName){
+        mMethodName = methodName;
+        return mE;
     }
 }

@@ -1,21 +1,29 @@
 package utils.builder;
 
+import org.powermock.api.mockito.PowerMockito;
+
 /**
  * Created by Administrator on 2017/2/10.
  */
 
 public class MockBuilder {
 
-    public static CallMethodByNameBuilder when(Object object,String methodName){
-        return new CallMethodByNameBuilder(object,methodName);
+    public void test() throws Exception {
+        PowerMockito.when(new Object(),"").thenReturn(null);
+        final Object arguments = null;
+        PowerMockito.verifyPrivate(new Object()).invoke("", arguments);
+        PowerMockito.whenNew(Object.class).withAnyArguments().thenReturn(123);
     }
 
-    @Deprecated
-    public static CallMethodBuilder when(Object object){
-        return new CallMethodBuilder(object);
+    public static <T> WhenBuilder<T> when(Object object){
+        return new WhenBuilder<>(object);
     }
 
     public static <T> WhenNewBuilder<T> whenNew(Class<T> tClass){
         return new WhenNewBuilder<>(tClass);
+    }
+
+    public static VerifyBuilder verify(Object object,int times) throws Exception {
+        return new VerifyBuilder(object,times);
     }
 }
