@@ -1,40 +1,26 @@
 package utils.builder;
 
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.mockito.verification.PrivateMethodVerification;
-
-import static org.mockito.Mockito.times;
 
 /**
  * Created by Administrator on 2017/2/11.
  */
 
-public class VerifyBuilder<T> extends UnReturnable{
+public class VerifyBuilder{
 
     //默认一次
-    private CallMethodBuilder<T,VerifyArgumentBuilder> mCallMethodBuilder;
-    private PrivateMethodVerification mPrivateMethodVerification;
-
+    private PrivateMethodVerification privateMethodVerification;
     VerifyBuilder(Object object,int times) throws Exception {
-        mCallMethodBuilder = new CallMethodBuilder<>(object,new VerifyArgumentBuilder(this));
-        mPrivateMethodVerification = PowerMockito.verifyPrivate(object,times(times));
+        if (object instanceof Class){
+            privateMethodVerification = PowerMockito.verifyPrivate(((Class) object), Mockito.times(times));
+        }else {
+            privateMethodVerification = PowerMockito.verifyPrivate((object), Mockito.times(times));
+        }
     }
 
-    public VerifyArgumentBuilder call(String methodName){
-        return mCallMethodBuilder.call(methodName);
-    }
-
-    public void callWithNoArgument(String methodName) throws Exception{
-        mPrivateMethodVerification.invoke(methodName);
-    }
-
-    @Override
-    void withArguments(final Object... arguments) throws Exception {
-        mPrivateMethodVerification.invoke(mCallMethodBuilder.mMethodName,arguments);
-    }
-
-    @Override
-    void withNoArgument() throws Exception {
-        mPrivateMethodVerification.invoke(mCallMethodBuilder.mMethodName);
+    public void call(String methodName,Object... arguments) throws Exception {
+        privateMethodVerification.invoke(methodName,arguments);
     }
 }

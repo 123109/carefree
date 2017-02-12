@@ -1,5 +1,7 @@
 package utils.builder;
 
+import org.mockito.exceptions.base.MockitoAssertionError;
+import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import org.mockito.stubbing.OngoingStubbing;
 import org.powermock.api.mockito.PowerMockito;
 
@@ -23,7 +25,11 @@ public class WhenNewBuilder<T> extends Returnable<T> {
     }
 
     void addConstructorArgument(final Object firstArgument, final Object... arguments) throws Exception {
-        mSetup = PowerMockito.whenNew(mClass).withArguments(firstArgument,arguments);
+        try {
+            mSetup = PowerMockito.whenNew(mClass).withArguments(firstArgument,arguments);
+        }catch (InvalidUseOfMatchersException e){
+            throw new MockitoAssertionError("传入多个参数时，要么全部用any，要么全部不用");
+        }
     }
 
     @Override
