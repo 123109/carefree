@@ -1,5 +1,7 @@
 package utils.builder;
 
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
 import org.powermock.api.mockito.PowerMockito;
 
@@ -28,5 +30,15 @@ public class WhenBuilder<T> extends Returnable<T> {
     @Override
     void addThrow(final Class<? extends  Throwable>... throwableList) throws Exception {
         when.thenThrow(throwableList);
+    }
+
+    @Override
+    void addAnswer(final IAnswer answer) throws Exception {
+        when.thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(final InvocationOnMock invocation) throws Throwable {
+                return answer.answer(invocation.getArguments());
+            }
+        });
     }
 }

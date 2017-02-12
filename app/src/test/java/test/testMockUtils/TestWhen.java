@@ -8,6 +8,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import base.TestInit;
 import classDefine.StaticClass;
 import utils.UncleMock;
+import utils.builder.IAnswer;
 
 /**
  * Created by Administrator on 2017/2/10.
@@ -81,6 +82,19 @@ public class TestWhen extends TestInit{
     public void  testWhen_static_withArgument_any() throws Exception {
         UncleMock.mockStatic(StaticClass.class);
         UncleMock.when(StaticClass.class).call("getRealValue",Mockito.anyInt(),Mockito.anyInt()).thenReturn(300);
+        Assert.assertTrue(StaticClass.getRealValue(1,100) == 300);
+        Assert.assertTrue(StaticClass.getRealValue(2,100) == 300);
+    }
+
+    @Test
+    public void  testWhen_static_withArgument_any_answer() throws Exception {
+        UncleMock.mockStatic(StaticClass.class);
+        UncleMock.when(StaticClass.class).call("getRealValue",Mockito.anyInt(),Mockito.anyInt()).thenAnswer(new IAnswer() {
+            @Override
+            public Object answer(final Object[] arguments) {
+                return 300;
+            }
+        });
         Assert.assertTrue(StaticClass.getRealValue(1,100) == 300);
         Assert.assertTrue(StaticClass.getRealValue(2,100) == 300);
     }

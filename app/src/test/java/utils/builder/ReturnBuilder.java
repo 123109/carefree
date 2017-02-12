@@ -23,4 +23,8 @@ public class ReturnBuilder<T> {
     public void thenThrow(final Class<? extends  Throwable>... throwableList) throws Throwable {
         mCoreBuilder.addThrow(throwableList);
     }
+
+    public void thenAnswer(IAnswer answer) throws Exception {
+        mCoreBuilder.addAnswer(answer);
+    }
 }

@@ -2,6 +2,8 @@ package utils.builder;
 
 import org.mockito.exceptions.base.MockitoAssertionError;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
 import org.powermock.api.mockito.PowerMockito;
 
@@ -46,6 +48,16 @@ public class WhenNewBuilder<T> extends Returnable<T> {
             mSetup = PowerMockito.whenNew(mClass).withAnyArguments();
         }
         mSetup.thenThrow(throwableList);
+    }
+
+    @Override
+    void addAnswer(final IAnswer answer) throws Exception {
+        mSetup.thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(final InvocationOnMock invocation) throws Throwable {
+                return answer.answer(invocation.getArguments());
+            }
+        });
     }
 
     void noArgument() throws Exception {
