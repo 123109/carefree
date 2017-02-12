@@ -10,7 +10,6 @@ import org.powermock.api.mockito.verification.PrivateMethodVerification;
 
 public class VerifyBuilder{
 
-    //默认一次
     private PrivateMethodVerification privateMethodVerification;
     VerifyBuilder(Object object,int times) throws Exception {
         if (object instanceof Class){
