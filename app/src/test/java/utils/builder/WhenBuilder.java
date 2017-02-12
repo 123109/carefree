@@ -9,7 +9,7 @@ import org.powermock.api.mockito.PowerMockito;
  * Created by Administrator on 2017/2/11.
  */
 
-public class WhenBuilder<T> extends AbstractBuilder<T> {
+public class WhenBuilder<T> extends Returnable<T> {
 
     private OngoingStubbing<T> when;
     private CallMethodBuilder<T, ArgumentBuilder<T>> mCallMethodBuilder;
@@ -22,12 +22,7 @@ public class WhenBuilder<T> extends AbstractBuilder<T> {
         return mCallMethodBuilder.call(methodName);
     }
 
-    @Override
-    void addConstructorArgument(final Object firstArgument, final Object... arguments) throws Exception {
 
-    }
-
-    @Override
     void addArguments(final Object... arguments) throws Exception {
         try {
             when = PowerMockito.when(mCallMethodBuilder.mObject,mCallMethodBuilder.mMethodName,arguments);
@@ -36,8 +31,6 @@ public class WhenBuilder<T> extends AbstractBuilder<T> {
         }
     }
 
-    @SafeVarargs
-    @Override
     final void addReturn(final T value, final T... otherValue) throws Exception {
         if (when == null){
             when = PowerMockito.when(mCallMethodBuilder.mObject,mCallMethodBuilder.mMethodName);
@@ -46,7 +39,10 @@ public class WhenBuilder<T> extends AbstractBuilder<T> {
     }
 
     @Override
-    void noArgument() {
-        when = null;
+    void addThrow(final Class<? extends  Throwable>... throwableList) throws Exception {
+        if (when == null){
+            when = PowerMockito.when(mCallMethodBuilder.mObject,mCallMethodBuilder.mMethodName);
+        }
+        when.thenThrow(throwableList);
     }
 }

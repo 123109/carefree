@@ -6,12 +6,15 @@ package utils.builder;
 
 public class ArgumentBuilder<T> extends ReturnBuilder<T>{
 
-    ArgumentBuilder(AbstractBuilder<T> builder){
+    private WhenBuilder<T> mBuilder;
+
+    ArgumentBuilder(WhenBuilder<T> builder){
         super(builder);
+        mBuilder = builder;
     }
 
     public ReturnBuilder<T> withArguments(Object... arguments) throws Exception {
-        mCoreBuilder.addArguments(arguments);
-        return new ReturnBuilder<>(mCoreBuilder);
+        mBuilder.addArguments(arguments);
+        return new ReturnBuilder<>(mBuilder);
     }
 }

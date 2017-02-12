@@ -1,12 +1,10 @@
 package utils.builder;
 
-import utils.MockUtils;
-
 /**
  * Created by Administrator on 2017/2/10.
  */
 
-class CallMethodBuilder<T,E>{
+public class CallMethodBuilder<T,E>{
     Object mObject;
     private E mE;
     String mMethodName;

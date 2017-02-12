@@ -9,25 +9,32 @@ import static org.mockito.Mockito.times;
  * Created by Administrator on 2017/2/11.
  */
 
-public class VerifyBuilder<T>{
+public class VerifyBuilder<T> extends UnReturnable{
 
     //默认一次
-    private CallMethodBuilder<T,VerifyArgumentBuilder<T>> mCallMethodBuilder;
-    PrivateMethodVerification mPrivateMethodVerification;
-    String mMethodName;
+    private CallMethodBuilder<T,VerifyArgumentBuilder> mCallMethodBuilder;
+    private PrivateMethodVerification mPrivateMethodVerification;
 
     VerifyBuilder(Object object,int times) throws Exception {
-        mCallMethodBuilder = new CallMethodBuilder<>(object,new VerifyArgumentBuilder<>(this));
+        mCallMethodBuilder = new CallMethodBuilder<>(object,new VerifyArgumentBuilder(this));
         mPrivateMethodVerification = PowerMockito.verifyPrivate(object,times(times));
     }
 
-    public VerifyArgumentBuilder<T> call(String methodName) throws Exception {
-        mMethodName = methodName;
+    public VerifyArgumentBuilder call(String methodName){
         return mCallMethodBuilder.call(methodName);
     }
 
-    public void callWithNoArguments(String methodName) throws Exception {
+    public void callWithNoArgument(String methodName) throws Exception{
         mPrivateMethodVerification.invoke(methodName);
     }
 
+    @Override
+    void withArguments(final Object... arguments) throws Exception {
+        mPrivateMethodVerification.invoke(mCallMethodBuilder.mMethodName,arguments);
+    }
+
+    @Override
+    void withNoArgument() throws Exception {
+        mPrivateMethodVerification.invoke(mCallMethodBuilder.mMethodName);
+    }
 }

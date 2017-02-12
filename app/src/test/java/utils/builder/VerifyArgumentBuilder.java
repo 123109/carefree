@@ -4,14 +4,18 @@ package utils.builder;
  * Created by Administrator on 2017/2/11.
  */
 
-public class VerifyArgumentBuilder<T>{
+public class VerifyArgumentBuilder{
 
-    private VerifyBuilder<T> mBuilder;
-    VerifyArgumentBuilder(VerifyBuilder<T> builder){
+    private UnReturnable mBuilder;
+    VerifyArgumentBuilder(UnReturnable builder){
         mBuilder = builder;
     }
 
     public void withArguments(Object... arguments) throws Exception {
-        mBuilder.mPrivateMethodVerification.invoke(mBuilder.mMethodName,arguments);
+        mBuilder.withArguments(arguments);
+    }
+
+    public void withNoArgument() throws Exception {
+        mBuilder.withNoArgument();
     }
 }

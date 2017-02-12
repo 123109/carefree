@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
-import utils.MockUtils;
-import utils.builder.MockBuilder;
+import utils.UncleMock;
 
 /**
  * Created by Administrator on 2017/2/10.
@@ -15,12 +14,12 @@ import utils.builder.MockBuilder;
 public class TestWhenNew extends TestInit{
     @Test
     public void testWhenNew_anyArgument() throws Exception {
-        DependencyClass mock = MockUtils.mock(DependencyClass.class);
-        MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).thenReturn(mock);
+        DependencyClass mock = UncleMock.mock(DependencyClass.class);
+        UncleMock.whenNew(DependencyClass.class).inClass(CallOrigin.class).thenReturn(mock);
         CallOrigin origin = new CallOrigin();
-        DependencyClass dependencyClass = MockUtils.getValue(origin,"mArguments");
-        DependencyClass dependencyClass1 = MockUtils.getValue(origin,"mOne");
-        DependencyClass dependencyClass2 = MockUtils.getValue(origin,"mTwo");
+        DependencyClass dependencyClass = UncleMock.getValue(origin,"mArguments");
+        DependencyClass dependencyClass1 = UncleMock.getValue(origin,"mOne");
+        DependencyClass dependencyClass2 = UncleMock.getValue(origin,"mTwo");
         Assert.assertTrue(mock == dependencyClass);
         Assert.assertTrue(mock == dependencyClass1);
         Assert.assertTrue(mock == dependencyClass2);
@@ -28,13 +27,13 @@ public class TestWhenNew extends TestInit{
 
     @Test
     public void testWhenNewOne() throws Exception {
-        DependencyClass mock = MockUtils.mock(DependencyClass.class);
+        DependencyClass mock = UncleMock.mock(DependencyClass.class);
         final Object argument = null;
-        MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).withArguments(argument).thenReturn(mock);
+        UncleMock.whenNew(DependencyClass.class).inClass(CallOrigin.class).withArguments(argument).thenReturn(mock);
         CallOrigin origin = new CallOrigin();
-        DependencyClass dependencyClass = MockUtils.getValue(origin,"mArguments");
-        DependencyClass dependencyClass1 = MockUtils.getValue(origin,"mOne");
-        DependencyClass dependencyClass2 = MockUtils.getValue(origin,"mTwo");
+        DependencyClass dependencyClass = UncleMock.getValue(origin,"mArguments");
+        DependencyClass dependencyClass1 = UncleMock.getValue(origin,"mOne");
+        DependencyClass dependencyClass2 = UncleMock.getValue(origin,"mTwo");
         Assert.assertTrue(mock != dependencyClass);
         Assert.assertTrue(mock == dependencyClass1);
         Assert.assertTrue(mock != dependencyClass2);
@@ -42,13 +41,13 @@ public class TestWhenNew extends TestInit{
 
     @Test
     public void testWhenNewTwo() throws Exception {
-        DependencyClass mock = MockUtils.mock(DependencyClass.class);
+        DependencyClass mock = UncleMock.mock(DependencyClass.class);
         final Object arguments = null;
-        MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).withArguments(null, arguments).thenReturn(mock);
+        UncleMock.whenNew(DependencyClass.class).inClass(CallOrigin.class).withArguments(null, arguments).thenReturn(mock);
         CallOrigin origin = new CallOrigin();
-        DependencyClass dependencyClass = MockUtils.getValue(origin,"mArguments");
-        DependencyClass dependencyClass1 = MockUtils.getValue(origin,"mOne");
-        DependencyClass dependencyClass2 = MockUtils.getValue(origin,"mTwo");
+        DependencyClass dependencyClass = UncleMock.getValue(origin,"mArguments");
+        DependencyClass dependencyClass1 = UncleMock.getValue(origin,"mOne");
+        DependencyClass dependencyClass2 = UncleMock.getValue(origin,"mTwo");
         Assert.assertTrue(mock != dependencyClass);
         Assert.assertTrue(mock != dependencyClass1);
         Assert.assertTrue(mock == dependencyClass2);
@@ -57,11 +56,11 @@ public class TestWhenNew extends TestInit{
     @Test
     public void testWhenNew_withNoArgument() throws Exception {
         DependencyClass mock = new DependencyClass();
-        MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).withNoArgument().thenReturn(mock);
+        UncleMock.whenNew(DependencyClass.class).inClass(CallOrigin.class).withNoArgument().thenReturn(mock);
         CallOrigin origin = new CallOrigin();
-        DependencyClass dependencyClass = MockUtils.getValue(origin,"mArguments");
-        DependencyClass dependencyClass1 = MockUtils.getValue(origin,"mOne");
-        DependencyClass dependencyClass2 = MockUtils.getValue(origin,"mTwo");
+        DependencyClass dependencyClass = UncleMock.getValue(origin,"mArguments");
+        DependencyClass dependencyClass1 = UncleMock.getValue(origin,"mOne");
+        DependencyClass dependencyClass2 = UncleMock.getValue(origin,"mTwo");
         Assert.assertTrue(mock == dependencyClass);
         Assert.assertTrue(mock != dependencyClass1);
         Assert.assertTrue(mock != dependencyClass2);

@@ -8,11 +8,13 @@ public class StaticClass {
 
     public static int getMockValue() {
         mPrivateValue = mPrivateValue + 10;
+        System.out.print("getMockValue\n");
         privateStatic();
         return mPrivateValue;
     }
 
     public static void setRealValue(int value){
+        System.out.print("setRealValue:"+value+"\n");
         mPrivateValue = value;
     }
 
@@ -25,6 +27,6 @@ public class StaticClass {
     }
 
     private static void privateStatic(){
-        mPrivateValue++;
+        System.out.print("privateStatic\n");
     }
 }

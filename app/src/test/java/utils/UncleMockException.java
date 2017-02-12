@@ -1,4 +1,4 @@
-package utils.builder;
+package utils;
 
 import org.mockito.exceptions.base.MockitoAssertionError;
 
