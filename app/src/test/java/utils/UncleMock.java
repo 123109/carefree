@@ -145,7 +145,7 @@ public class UncleMock {
     }
 
 
-    public static <T> WhenBuilder<T> when(Object object) throws Exception{
+    public static <T> WhenBuilder<T> when(Object object){
         return mMockBuilder.when(object);
     }
 
