@@ -75,4 +75,14 @@ public class MockUtils {
             throw new MockitoAssertionError(e.getMessage());
         }
     }
+
+
+    public static void check(Object object){
+        if (object instanceof Class){
+            //要测试一个静态方法
+            checkStaticMock((Class) object);
+        }else{
+            checkMocked(object);
+        }
+    }
 }

@@ -10,7 +10,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import utils.builder.DoAnswerBuilder;
 import utils.builder.DoNothingBuilder;
+import utils.builder.IAnswer;
 import utils.builder.MockBuilder;
 import utils.builder.MockUtils;
 import utils.builder.VerifyBuilder;
@@ -161,11 +163,13 @@ public class UncleMock {
         return mMockBuilder.verifyNew(tClass,times);
     }
 
-    public static DoNothingBuilder doNothingWhen(Object object){
-        return mMockBuilder.doNothing(object);
+    public static DoNothingBuilder doNothing(){
+        return mMockBuilder.doNothing();
     }
 
-
+    public static DoAnswerBuilder doAnswer(IAnswer answer){
+        return mMockBuilder.doAnswer(answer);
+    }
 
     private static boolean isEmpty(String input){
         return input == null || input.equals("");

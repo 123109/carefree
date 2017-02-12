@@ -1,6 +1,7 @@
 package test.testMockUtils;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
@@ -17,7 +18,15 @@ public class TestDoNothing extends TestInit{
     public void test_class() throws Exception {
         StaticClass.setRealValue(1);
         PowerMockito.spy(StaticClass.class);
-        UncleMock.doNothingWhen(StaticClass.class).call("setRealValue",1);
+        UncleMock.doNothing().when(StaticClass.class).call("setRealValue",1);
+        StaticClass.setRealValue(1);
+    }
+
+    @Test
+    public void test_class_any() throws Exception {
+        StaticClass.setRealValue(1);
+        PowerMockito.spy(StaticClass.class);
+        UncleMock.doNothing().when(StaticClass.class).call("setRealValue", Mockito.anyInt());
         StaticClass.setRealValue(1);
     }
 
@@ -26,7 +35,7 @@ public class TestDoNothing extends TestInit{
         CallOrigin origin = UncleMock.spy(new CallOrigin());
         origin.callOne();
         origin.callVoid();
-        UncleMock.doNothingWhen(origin).call("callVoid");
+        UncleMock.doNothing().when(origin).call("callVoid");
         origin.callVoid();
     }
 }

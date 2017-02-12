@@ -8,17 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 
 public class DoNothingBuilder{
 
-    private Object mObject;
-
-    DoNothingBuilder(Object object){
-        mObject = object;
-    }
-
-    public void call(String methodName,Object... arguments) throws Exception {
-        if (mObject instanceof Class){
-            PowerMockito.doNothing().when(((Class) mObject),methodName,arguments);
-        }else {
-            PowerMockito.doNothing().when(mObject,methodName,arguments);
-        }
+    public CallBuilder when(Object object){
+        return new CallBuilder(object,PowerMockito.doNothing());
     }
 }

@@ -1,5 +1,7 @@
 package utils.builder;
 
+import static utils.builder.MockUtils.check;
+
 /**
  * Created by Administrator on 2017/2/10.
  */
@@ -26,17 +28,11 @@ public class MockBuilder {
         return new VerifyNewBuilder(tClass,times);
     }
 
-    public DoNothingBuilder doNothing(Object object){
-        check(object);
-        return new DoNothingBuilder(object);
+    public DoNothingBuilder doNothing(){
+        return new DoNothingBuilder();
     }
 
-    private void check(Object object){
-        if (object instanceof Class){
-            //要测试一个静态方法
-            MockUtils.checkStaticMock((Class) object);
-        }else{
-            MockUtils.checkMocked(object);
-        }
+    public DoAnswerBuilder doAnswer(IAnswer answer){
+        return new DoAnswerBuilder(answer);
     }
 }
