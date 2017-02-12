@@ -9,10 +9,10 @@ import org.powermock.api.mockito.PowerMockito;
  * Created by Administrator on 2017/2/11.
  */
 
-public class WhenBuilder<T> extends CoreBuilder<T>{
+public class WhenBuilder<T> extends AbstractBuilder<T> {
 
-    OngoingStubbing<T> when;
-    CallMethodBuilder<T, ArgumentBuilder<T>> mCallMethodBuilder;
+    private OngoingStubbing<T> when;
+    private CallMethodBuilder<T, ArgumentBuilder<T>> mCallMethodBuilder;
 
     WhenBuilder(final Object object) {
         mCallMethodBuilder = new CallMethodBuilder<>(object,new ArgumentBuilder<>(this));

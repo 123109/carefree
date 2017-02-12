@@ -12,23 +12,22 @@ import static org.mockito.Mockito.times;
 public class VerifyBuilder<T>{
 
     //默认一次
-    private int mTimes = 1;
     private CallMethodBuilder<T,VerifyArgumentBuilder<T>> mCallMethodBuilder;
     PrivateMethodVerification mPrivateMethodVerification;
     String mMethodName;
 
-    public VerifyBuilder(Object object,int times) throws Exception {
-        mTimes = times;
+    VerifyBuilder(Object object,int times) throws Exception {
         mCallMethodBuilder = new CallMethodBuilder<>(object,new VerifyArgumentBuilder<>(this));
-        mPrivateMethodVerification = PowerMockito.verifyPrivate(object);
+        mPrivateMethodVerification = PowerMockito.verifyPrivate(object,times(times));
     }
 
-    public VerifyArgumentBuilder<T> callWithArguments(String methodName) throws Exception {
+    public VerifyArgumentBuilder<T> call(String methodName) throws Exception {
         mMethodName = methodName;
         return mCallMethodBuilder.call(methodName);
     }
 
-    public void call(String methodName) throws Exception {
-        PowerMockito.verifyPrivate(mCallMethodBuilder.mObject,times(mTimes)).invoke(methodName);
+    public void callWithNoArguments(String methodName) throws Exception {
+        mPrivateMethodVerification.invoke(methodName);
     }
+
 }

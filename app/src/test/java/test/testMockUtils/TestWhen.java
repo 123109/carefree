@@ -2,6 +2,7 @@ package test.testMockUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
@@ -50,8 +51,9 @@ public class TestWhen extends TestInit{
     @Test
     public void testWhen_callTwo() throws Exception{
         CallOrigin mock = MockUtils.mock(CallOrigin.class);
-        MockBuilder.when(mock).call("callTwo").withArguments("1","2").thenReturn("1");
+        MockBuilder.when(mock).call("callTwo").withArguments(Mockito.anyString(),Mockito.anyString()).thenReturn("1");
         Assert.assertTrue(mock.callTwo("1","2").equals("1"));
+        Assert.assertTrue(mock.callTwo("2","2").equals("1"));
     }
 
     @Test

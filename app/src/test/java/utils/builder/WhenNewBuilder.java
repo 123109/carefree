@@ -9,8 +9,8 @@ import utils.MockUtils;
  * Created by Administrator on 2017/2/10.
  */
 
-public class WhenNewBuilder<T> extends CoreBuilder<T>{
-    OngoingStubbing<T> mSetup;
+public class WhenNewBuilder<T> extends AbstractBuilder<T> {
+    private OngoingStubbing<T> mSetup;
     private Class<T> mClass;
     WhenNewBuilder(Class<T> tClass) {
         mClass = tClass;

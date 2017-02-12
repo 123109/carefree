@@ -43,7 +43,7 @@ public class testDebounce extends TestInit {
             public void call(final Long aLong) {
                 //这里把实际被丢过来的数字存起来
                 accept.add(aLong);
-                System.out.print("call:"+aLong+"\n");
+                System.out.print("callWithNoArguments:"+aLong+"\n");
             }
         });
         new Semaphore(0).tryAcquire(4, TimeUnit.SECONDS);

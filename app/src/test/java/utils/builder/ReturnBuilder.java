@@ -5,9 +5,9 @@ package utils.builder;
  */
 
 public class ReturnBuilder<T> {
-    CoreBuilder<T> mCoreBuilder;
+    AbstractBuilder<T> mCoreBuilder;
 
-    ReturnBuilder(CoreBuilder<T> builder) {
+    ReturnBuilder(AbstractBuilder<T> builder) {
         mCoreBuilder = builder;
     }
 

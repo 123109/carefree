@@ -14,7 +14,7 @@ import utils.builder.MockBuilder;
 @PrepareForTest(CallOrigin.class)
 public class TestWhenNew extends TestInit{
     @Test
-    public void testWhenNew() throws Exception {
+    public void testWhenNew_anyArgument() throws Exception {
         DependencyClass mock = MockUtils.mock(DependencyClass.class);
         MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).thenReturn(mock);
         CallOrigin origin = new CallOrigin();
@@ -55,16 +55,15 @@ public class TestWhenNew extends TestInit{
     }
 
     @Test
-    public void testWhenNewOneBySpecified() throws Exception {
+    public void testWhenNew_withNoArgument() throws Exception {
         DependencyClass mock = new DependencyClass();
-        final Object argument = null;
-        MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).withArguments(argument).thenReturn(mock);
+        MockBuilder.whenNew(DependencyClass.class).inClass(CallOrigin.class).withNoArgument().thenReturn(mock);
         CallOrigin origin = new CallOrigin();
         DependencyClass dependencyClass = MockUtils.getValue(origin,"mArguments");
         DependencyClass dependencyClass1 = MockUtils.getValue(origin,"mOne");
         DependencyClass dependencyClass2 = MockUtils.getValue(origin,"mTwo");
-        Assert.assertTrue(mock != dependencyClass);
-        Assert.assertTrue(mock == dependencyClass1);
+        Assert.assertTrue(mock == dependencyClass);
+        Assert.assertTrue(mock != dependencyClass1);
         Assert.assertTrue(mock != dependencyClass2);
     }
 

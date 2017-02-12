@@ -33,7 +33,7 @@ public class Scene6_AssertPrivateMethod {
 
         //下面这一行是跑不过的，会提示：
 //        org.mockito.exceptions.misusing.UnfinishedVerificationException:
-//        Missing method call for verify(mock) here:
+//        Missing method callWithNoArguments for verify(mock) here:
 //        -> at test.testByPowerMockito.sceneTest.Scene6_AssertPrivateMethod.verifyPrivateByPowerMockito(Scene6_AssertPrivateMethod.java:28)
 //        PowerMockito.verifyPrivate(test).invoke("doNothing");
     }

@@ -25,6 +25,6 @@ public class StaticClass {
     }
 
     private static void privateStatic(){
-
+        mPrivateValue++;
     }
 }

@@ -16,9 +16,9 @@ class CallMethodBuilder<T,E>{
         mE = e;
         if (object instanceof Class){
             //要测试一个静态方法
-            MockUtils.checkStaticMock((Class) object,"调用when方法之前");
+            MockUtils.checkStaticMock((Class) object);
         }else{
-            MockUtils.checkMocked(object,"when");
+            MockUtils.checkMocked(object);
         }
     }
 

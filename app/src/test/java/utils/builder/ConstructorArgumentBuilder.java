@@ -6,7 +6,7 @@ package utils.builder;
 
 public class ConstructorArgumentBuilder<T> extends ReturnBuilder<T>{
 
-    ConstructorArgumentBuilder(CoreBuilder<T> builder){
+    ConstructorArgumentBuilder(AbstractBuilder<T> builder){
         super(builder);
     }
 

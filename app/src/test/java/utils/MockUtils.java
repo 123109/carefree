@@ -23,6 +23,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import utils.builder.UncleMockException;
 
 import static org.mockito.Mockito.times;
 
@@ -74,7 +75,7 @@ public class MockUtils {
     /**
      * @param willBeNew 将要被创建新实例的类
      * @param callNew 执行创建新实例的代码所在的类，比如在B类里会创建一个A类的实例，那么willBeNew是A，callNew是B
-     * @param <T>
+     * @param <T> T
      * @return mock出来的实例
      * @throws Exception
      */
@@ -94,6 +95,7 @@ public class MockUtils {
         if (callNew != null) {
             checkPrepare(callNew);
         }
+        @SuppressWarnings("unchecked")
         final OngoingStubbing<T> stubbing = (OngoingStubbing<T>) PowerMockito.whenNew(aClass).withAnyArguments();
         stubbing.thenReturn(t);
     }
@@ -165,29 +167,27 @@ public class MockUtils {
     public static void verifyStatic(int time,Class mock,ICallTestMethod callBack){
         //需要判断被verify的类是不是被prepare的
         checkPrepare(mock);
-        checkStaticMock(mock,"verifyStatic之前");
+        checkStaticMock(mock);
         PowerMockito.verifyStatic(times(time));
         try {
             callBack.call();
-        }catch (TooManyActualInvocations e){
-            translateException(time, e);
-        }catch (TooLittleActualInvocations e){
+        }catch (TooManyActualInvocations | TooLittleActualInvocations e){
             translateException(time, e);
         }
     }
 
-    public static void checkStaticMock(final Class mock,String tag) {
+    public static void checkStaticMock(final Class mock) {
         Map<Class<?>, MethodInvocationControl> classMocks = Whitebox.getInternalState(MockRepository.class,"classMocks",MockRepository.class);
         if (!classMocks.containsKey(mock)){
-            throw new MockitoAssertionError(tag+"，要先调用MockUtils.mockStatic("+mock.getSimpleName()+".class)");
+            throw new UncleMockException("静态方法要先调用MockUtils.mockStatic("+mock.getSimpleName()+".class)");
         }
     }
 
     public static PrivateMethodVerification verify(Object mock, int times ) throws Exception {
         if (mock == null) {
-            throw new MockitoAssertionError("要verify的对象不能为null");
+            throw new UncleMockException("要verify的对象不能为null");
         }
-        checkMocked(mock,"verify");
+        checkMocked(mock);
         return PowerMockito.verifyPrivate(mock,times(times));
     }
 
@@ -201,13 +201,13 @@ public class MockUtils {
     }
 
     public static  <T> OngoingStubbing<T> when(Object object, String methodName, Object... arguments) throws Exception {
-        checkMocked(object,"when");
+        checkMocked(object);
         checkPrepareFinal(object.getClass());
         return PowerMockito.when(object,methodName,arguments);
     }
 
     public static void doNothingWhen(Object object, String methodName, Object... arguments) throws Exception{
-        checkMocked(object,"doNothingWhen");
+        checkMocked(object);
         checkPrepareFinal(object.getClass());
         PowerMockito.doNothing().when(object,methodName,arguments);
     }
@@ -223,7 +223,7 @@ public class MockUtils {
                 }
             }
         }
-        throw new MockitoAssertionError("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
+        throw new UncleMockException("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
                 "\"@PrepareForTest("+mock.getSimpleName()+".class)\"，\n" +
                 "如果已有该注解，请在注解体里添加"+mock.getSimpleName()+".class");
     }
@@ -256,17 +256,17 @@ public class MockUtils {
         if (index > 0 ){
             final String substring = message.substring(index + 8,index + 9);
             int count = Integer.parseInt(substring);
-            throw  new MockitoAssertionError("期望执行次数是"+time+"，实际上执行了"+count+"次");
+            throw  new UncleMockException("期望执行次数是"+time+"，实际上执行了"+count+"次");
         }
     }
 
-    public static void checkMocked(Object object,String methodName){
+    public static void checkMocked(Object object){
         Class clazz = object.getClass();
         ClassLoader classloader = clazz .getClassLoader();
         if (!(classloader instanceof SearchingClassLoader)){
             //这不是一个被mock的对象
             String name = clazz.getSimpleName();
-            throw new MockitoAssertionError("\n\n"+methodName+"方法里的对象必须是mock出来或者spy出来的，例如：\n" +
+            throw new UncleMockException("\n\n模拟的对象必须是mock出来或者spy出来的，例如：\n" +
                     name + " mock = MockUtils.Mock("+name+".class) 或者\n" +
                     name + " spy = MockUtils.spy(new "+name+"())") ;
         }
@@ -275,5 +275,4 @@ public class MockUtils {
     public interface ICallTestMethod {
         void call();
     }
-
 }
