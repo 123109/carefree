@@ -6,6 +6,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
 import classDefine.StaticClass;
+import test.testMockUtils.bean.CallOrigin;
 import utils.UncleMock;
 import utils.builder.IAnswer;
 

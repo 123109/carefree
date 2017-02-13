@@ -1,12 +1,15 @@
 package test.testMockUtils;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
 import classDefine.StaticClass;
+import test.testMockUtils.bean.CallOrigin;
 import utils.UncleMock;
+import utils.UncleMockException;
 
 /**
  * Created by Administrator on 2017/2/11.
@@ -44,7 +47,14 @@ public class TestVerify extends TestInit{
     public void testUnMock() throws Exception {
         final CallOrigin callOrigin = new CallOrigin();
         callOrigin.callTwo("1","2");
-        UncleMock.verify(callOrigin,1).call("callTwo","1","2");
+        boolean isError = false;
+        try {
+            UncleMock.verify(callOrigin,1).call("callTwo","1","2");
+        }catch (UncleMockException e){
+            e.printStackTrace();
+            isError = true;
+        }
+        Assert.assertTrue(isError);
     }
 
 }

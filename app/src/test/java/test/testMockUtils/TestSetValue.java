@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import base.TestInit;
 import classDefine.StaticClass;
+import test.testMockUtils.bean.CallOrigin;
 import utils.UncleMock;
 
 /**

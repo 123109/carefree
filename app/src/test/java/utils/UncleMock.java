@@ -1,6 +1,7 @@
 package utils;
 
 import org.mockito.exceptions.base.MockitoAssertionError;
+import org.mockito.internal.creation.util.SearchingClassLoader;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 
@@ -82,7 +83,8 @@ public class UncleMock {
             }
             Field field = clazz.getDeclaredField(fieldName);
             if (Modifier.isFinal(field.getModifiers())){
-                throw new UncleMockException("年轻人,final的修饰的成员变量是值是不能被这样修改的~至于要怎么改~我也不知道哇");
+                new UncleMockException("\n\n别紧张年轻人，看到这个异常不是你的代码出了问题了\n" +
+                        "叔只是要告诉你，修改一个final变量的值是没有意义的，，做一些有意义的事情吧~").printStackTrace();
             }
         } catch (NoSuchFieldException e) {
             throw new UncleMockException(e.getMessage());
@@ -90,7 +92,14 @@ public class UncleMock {
         if (object instanceof Class){
             Whitebox.setInternalState(object,fieldName,value,((Class) object));
         }else{
-            Whitebox.setInternalState(object,fieldName,value,object.getClass());
+            final Class<?> aClass = object.getClass();
+            if (aClass.getClassLoader() instanceof SearchingClassLoader){
+                new UncleMockException("\n\n别紧张年轻人，看到这个异常不是你的代码出了问题了~\n" +
+                        "叔只是要告诉你，往一个被mock的对象里设置成员变量的值是没有意义的，做一些有意义的事情吧~").printStackTrace();
+                Whitebox.setInternalState(object,fieldName,value);
+            }else{
+                Whitebox.setInternalState(object,fieldName,value, aClass);
+            }
         }
     }
 
@@ -103,7 +112,13 @@ public class UncleMock {
             Class tClass = ((Class) object);
             return (T) Whitebox.getInternalState(object,fieldName,tClass);
         }else{
-            return Whitebox.getInternalState(object,fieldName,object.getClass());
+            final Class<?> aClass = object.getClass();
+            if (aClass.getClassLoader() instanceof SearchingClassLoader){
+                new UncleMockException("\n\n别紧张年轻人，看到这个异常不是你的代码出了问题了~\n" +
+                        "叔只是要告诉你，从一个被mock的对象里取成员变量的值是没有意义的，做一些有意义的事情吧~").printStackTrace();
+                return Whitebox.getInternalState(object,fieldName);
+            }
+            return Whitebox.getInternalState(object,fieldName, aClass);
         }
     }
 

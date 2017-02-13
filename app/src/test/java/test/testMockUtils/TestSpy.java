@@ -10,6 +10,8 @@ import classDefine.EnumClass;
 import classDefine.FinalClass;
 import classDefine.InstanceClass;
 import classDefine.StaticClass;
+import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.DependencyClass;
 import utils.UncleMock;
 
 /**

@@ -22,7 +22,7 @@ public class MockUtils {
     static void checkStaticMock(final Class mock) {
         Map<Class<?>, MethodInvocationControl> classMocks = Whitebox.getInternalState(MockRepository.class,"classMocks",MockRepository.class);
         if (!classMocks.containsKey(mock)){
-            throw new UncleMockException("静态方法要先调用MockUtils.mockStatic("+mock.getSimpleName()+".class)");
+            throw new UncleMockException("\n\n静态方法要先调用MockUtils.mockStatic("+mock.getSimpleName()+".class)");
         }
     }
 

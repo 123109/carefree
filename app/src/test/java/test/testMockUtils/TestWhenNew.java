@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
+import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.DependencyClass;
 import utils.UncleMock;
 
 /**
