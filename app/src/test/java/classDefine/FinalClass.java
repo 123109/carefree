@@ -5,10 +5,11 @@ package classDefine;
  */
 public final class FinalClass {
 
-    private static int mValue = 100;
+    private static int mStaticValue = 100;
 
+    private int mValue = 100;
     public static  int getValue(){
-        return mValue;
+        return mStaticValue;
     }
 
     public int getMockValue(){

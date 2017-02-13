@@ -16,9 +16,7 @@ public class TestVerifyNew extends TestInit{
     public void test_withNoArgument() throws Exception {
         final DependencyClass value = new DependencyClass();
         UncleMock.whenNew(DependencyClass.class).inClass(CallOrigin.class).withNoArgument().thenReturn(value);
-        CallOrigin callOrigin = new CallOrigin();
-//        DependencyClass dependencyClass = MockUtils.getValue(callOrigin,"mArguments");
-//        Assert.assertTrue(dependencyClass == value);
+        new CallOrigin();
         UncleMock.verifyNew(DependencyClass.class,1).withNoArgument();
         UncleMock.verifyNew(DependencyClass.class,1).withArguments(Mockito.anyString());
     }
@@ -27,10 +25,7 @@ public class TestVerifyNew extends TestInit{
     public void test_withOneArgument() throws Exception {
         final DependencyClass value = new DependencyClass();
         UncleMock.whenNew(DependencyClass.class).inClass(CallOrigin.class).withArguments(Mockito.anyString()).thenReturn(value);
-        CallOrigin callOrigin = new CallOrigin();
-        DependencyClass dependencyClass = UncleMock.getValue(callOrigin,"mOne");
-//        Assert.assertTrue(dependencyClass == value);
+        new CallOrigin();
         UncleMock.verifyNew(DependencyClass.class,1).withArguments(Mockito.anyString());
-//        UncleMock.verifyNew(DependencyClass.class,0).withArguments("1","2");
     }
 }

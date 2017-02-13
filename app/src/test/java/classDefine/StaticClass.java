@@ -4,26 +4,26 @@ package classDefine;
  * Created by cb on 2016/5/20.
  */
 public class StaticClass {
-    private static int mPrivateValue = 0;
+    private static int mValue = 10;
 
     public static int getMockValue() {
-        mPrivateValue = mPrivateValue + 10;
+        mValue = mValue + 10;
         System.out.print("getMockValue\n");
         privateStatic();
-        return mPrivateValue;
+        return mValue;
     }
 
     public static void setRealValue(int value){
         System.out.print("setRealValue:"+value+"\n");
-        mPrivateValue = value;
+        mValue = value;
     }
 
     public static int getRealValue(){
-        return mPrivateValue;
+        return mValue;
     }
 
     public static int getRealValue(int input,int in){
-        return mPrivateValue;
+        return mValue;
     }
 
     private static void privateStatic(){

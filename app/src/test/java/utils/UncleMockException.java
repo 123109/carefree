@@ -10,4 +10,6 @@ public class UncleMockException extends MockitoAssertionError {
     public UncleMockException(final String message) {
         super(message);
     }
+
+
 }
