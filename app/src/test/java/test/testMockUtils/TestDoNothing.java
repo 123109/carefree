@@ -17,9 +17,11 @@ import utils.UncleMock;
 public class TestDoNothing extends TestInit{
     @Test
     public void test_class() throws Exception {
+        System.out.print("before doNothing\n");
         StaticClass.setRealValue(1);
         PowerMockito.spy(StaticClass.class);
         UncleMock.doNothing().when(StaticClass.class).call("setRealValue",1);
+        System.out.print("after doNothing\n");
         StaticClass.setRealValue(1);
     }
 

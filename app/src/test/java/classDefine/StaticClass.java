@@ -23,6 +23,7 @@ public class StaticClass {
     }
 
     public static int getRealValue(int input,int in){
+        System.out.print("real method called:getRealValue\n");
         return mValue;
     }
 
