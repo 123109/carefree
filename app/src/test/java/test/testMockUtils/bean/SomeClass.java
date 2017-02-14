@@ -12,6 +12,7 @@ public class SomeClass {
     private static int mStaticValue = 1;
 
     private final  int mFinalValue = 2;
+    private String mValue = "default";
 
     public String callOne(){
         mArguments.one("123");

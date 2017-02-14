@@ -45,7 +45,7 @@ public class UncleSubscriber<T>{
     }
 
     public void waitTerminal() throws InterruptedException {
-        mSemaphore.tryAcquire(100, TimeUnit.SECONDS);
+        mSemaphore.tryAcquire(120, TimeUnit.SECONDS);
     }
 
     public void waitTerminal(long count,TimeUnit unit) throws InterruptedException {
