@@ -37,7 +37,11 @@ public class VerifyNewBuilder{
 
     public void withArguments(Object argument,Object... arguments) throws Exception {
         if (mIsKnown){
-            mVerification.withArguments(argument,arguments);
+            if (arguments == null){
+                mVerification.withArguments(argument,new Object[]{null});
+            }else{
+                mVerification.withArguments(argument,arguments);
+            }
         }else {
             throw new UncleMockException("\n\n强烈不建议使用verifyNew\n" +
                     "PowerMockito本身的bug,会导致verifyNew单个文件测试的时候能通过，一旦和其它测试一起跑就会挂\n" +

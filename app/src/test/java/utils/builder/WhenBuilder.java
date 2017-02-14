@@ -28,7 +28,7 @@ public class WhenBuilder<T> extends Returnable<T> {
     }
 
     @Override
-    void addThrow(final Class<? extends  Throwable>... throwableList) throws Exception {
+    void addThrow(final Throwable... throwableList) throws Exception {
         when.thenThrow(throwableList);
     }
 

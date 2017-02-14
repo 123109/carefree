@@ -28,7 +28,12 @@ public class WhenNewBuilder<T> extends Returnable<T> {
 
     void addConstructorArgument(final Object firstArgument, final Object... arguments) throws Exception {
         try {
-            mSetup = PowerMockito.whenNew(mClass).withArguments(firstArgument,arguments);
+            if (arguments == null){
+                //多个参数时，如果第二个参数为Null,直接丢进去会出问题，要先转一下
+                mSetup = PowerMockito.whenNew(mClass).withArguments(firstArgument,new Object[]{null});
+            }else{
+                mSetup = PowerMockito.whenNew(mClass).withArguments(firstArgument,arguments);
+            }
         }catch (InvalidUseOfMatchersException e){
             throw new MockitoAssertionError("传入多个参数时，要么全部用any，要么全部不用");
         }
@@ -43,7 +48,7 @@ public class WhenNewBuilder<T> extends Returnable<T> {
     }
 
     @Override
-    void addThrow(final Class<? extends  Throwable>... throwableList) throws Throwable {
+    void addThrow(final Throwable... throwableList) throws Throwable {
         if (mSetup == null){
             mSetup = PowerMockito.whenNew(mClass).withAnyArguments();
         }

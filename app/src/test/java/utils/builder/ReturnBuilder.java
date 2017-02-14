@@ -20,7 +20,7 @@ public class ReturnBuilder<T> {
         mCoreBuilder.addReturn(value);
     }
 
-    public void thenThrow(final Class<? extends  Throwable>... throwableList) throws Throwable {
+    public void thenThrow(final Throwable... throwableList) throws Throwable {
         mCoreBuilder.addThrow(throwableList);
     }
 

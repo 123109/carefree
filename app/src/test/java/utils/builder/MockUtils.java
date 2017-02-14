@@ -2,13 +2,17 @@ package utils.builder;
 
 import android.support.annotation.Nullable;
 
+import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
 import org.mockito.exceptions.base.MockitoAssertionError;
 import org.mockito.internal.creation.util.SearchingClassLoader;
 import org.powermock.core.MockRepository;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.spi.MethodInvocationControl;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import utils.UncleMockException;
@@ -30,6 +34,13 @@ public class MockUtils {
         Class clazz = object.getClass();
         ClassLoader classloader = clazz .getClassLoader();
         if (!(classloader instanceof SearchingClassLoader)){
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getType().getName().startsWith("org.mockito")){
+                    return;
+                }
+            }
+
             //这不是一个被mock的对象
             String name = clazz.getSimpleName();
             throw new UncleMockException("\n\n模拟的对象必须是mock出来或者spy出来的，例如：\n" +
@@ -41,6 +52,17 @@ public class MockUtils {
     public static void checkPrepare(final Class mock) {
         Class from = getTestOriginClass();
         assert from != null;
+        RunWith runWith = (RunWith) from.getAnnotation(RunWith.class);
+        if (runWith != null){
+            Class<? extends Runner> runner = runWith.value();
+            if (runner != PowerMockRunner.class){
+                throw new UncleMockException("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
+                        "\"@RunWith(PowerMockRunner.class)");
+            }
+        }else{
+            throw new UncleMockException("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
+                    "\"@RunWith(PowerMockRunner.class)");
+        }
         PrepareForTest test = (PrepareForTest) from.getAnnotation(PrepareForTest.class);
         if (test != null){
             Class[] prepared = test.value();

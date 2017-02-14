@@ -35,4 +35,24 @@ public class SomeClass {
     public int getFinalValue() {
         return mFinalValue;
     }
+
+    public String getValue(String input){
+        return input;
+    }
+
+    public String getValue(){
+        return mValue;
+    }
+
+    public DependencyClass getNoArgument() {
+        return mArguments;
+    }
+
+    public DependencyClass getOneArgument() {
+        return mOne;
+    }
+
+    public DependencyClass getTwoArguments() {
+        return mTwo;
+    }
 }

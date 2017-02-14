@@ -7,7 +7,7 @@ package utils.builder;
 abstract class Returnable<T> {
     abstract void addReturn(T value,T... otherValue) throws Exception;
 
-    abstract void addThrow(final Class<? extends  Throwable>... throwableList) throws Throwable;
+    abstract void addThrow(Throwable... throwableList) throws Throwable;
 
     abstract void addAnswer(IAnswer answer) throws Exception;
 }

@@ -21,11 +21,13 @@ public class TestDoAnswer extends TestInit{
         UncleMock.doAnswer(new IAnswer() {
             @Override
             public Object answer(final Object[] arguments) {
-                System.out.print("answer");
+                for (Object argument : arguments) {
+                    System.out.print(argument.getClass()+":"+argument);
+                }
                 return null;
             }
-        }).when(StaticClass.class).call("setRealValue",1);
-        StaticClass.setRealValue(1);
+        }).when(StaticClass.class).call("getRealValue",1,2);
+        StaticClass.getRealValue(1,2);
     }
 
     @Test

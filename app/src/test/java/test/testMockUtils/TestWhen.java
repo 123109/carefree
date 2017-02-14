@@ -99,4 +99,30 @@ public class TestWhen extends TestInit{
         Assert.assertTrue(StaticClass.getRealValue(1,100) == 300);
         Assert.assertTrue(StaticClass.getRealValue(2,100) == 300);
     }
+
+    @Test
+    public void test_multiSet() throws Throwable {
+        SomeClass someClass  = UncleMock.mock(SomeClass.class);
+        UncleMock.when(someClass).call("getValue").thenReturn("100");
+        UncleMock.when(someClass).call("getValue","1").thenReturn("10");
+        UncleMock.when(someClass).call("getValue","2").thenReturnValues("10","20");
+        UncleMock.when(someClass).call("getValue","3").thenThrow(new NullPointerException());
+        Assert.assertTrue(someClass.getValue().equals("100"));
+        Assert.assertTrue(someClass.getValue("1").equals("10"));
+        Assert.assertTrue(someClass.getValue("2").equals("10"));
+        Assert.assertTrue(someClass.getValue("2").equals("20"));
+        Assert.assertTrue(someClass.getValue("2").equals("20"));
+        boolean isException = false;
+        try {
+            someClass.getValue("3");
+        }catch (NullPointerException e){
+            isException = true;
+        }
+        Assert.assertTrue(isException);
+
+        UncleMock.mockStatic(StaticClass.class);
+        UncleMock.when(StaticClass.class).call("getRealValue",Mockito.anyInt(),Mockito.anyInt()).thenReturn(1);
+        Assert.assertTrue(StaticClass.getRealValue(1,1) == 1);
+        Assert.assertTrue(StaticClass.getRealValue(1,2) == 1);
+    }
 }
