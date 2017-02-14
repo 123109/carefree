@@ -9,7 +9,7 @@ import classDefine.EnumClass;
 import classDefine.FinalClass;
 import classDefine.InstanceClass;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import test.testMockUtils.bean.DependencyClass;
 import utils.UncleMock;
 
@@ -20,10 +20,10 @@ import utils.UncleMock;
 public class TestMock extends TestInit{
     @Test
     public void test_mock(){
-        CallOrigin unMock = new CallOrigin();
+        SomeClass unMock = new SomeClass();
         DependencyClass dependencyClass = UncleMock.getValue(unMock,"mOne");
         Assert.assertTrue(dependencyClass != null);
-        CallOrigin mock = UncleMock.mock(CallOrigin.class);
+        SomeClass mock = UncleMock.mock(SomeClass.class);
         DependencyClass dependencyClassInMock = UncleMock.getValue(mock,"mOne");
         Assert.assertTrue(dependencyClassInMock == null);
     }

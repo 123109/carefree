@@ -4,7 +4,7 @@ package test.testMockUtils.bean;
  * Created by Administrator on 2017/2/9.
  */
 
-public class CallOrigin {
+public class SomeClass {
 
     private DependencyClass mArguments = new DependencyClass();
     private DependencyClass mOne = new DependencyClass(null);

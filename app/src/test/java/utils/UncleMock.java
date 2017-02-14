@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import utils.builder.DoAnswerBuilder;
@@ -27,7 +28,7 @@ import utils.builder.WhenNewBuilder;
 public class UncleMock {
 
     private static MockBuilder mMockBuilder = Whitebox.newInstance(MockBuilder.class);
-
+    private static Semaphore mSemaphore;
     public static <T> T mock(Class<T> tClass){
         if (tClass == null) {
             throw new MockitoAssertionError("mock对象类不能为空");
@@ -73,7 +74,7 @@ public class UncleMock {
     }
 
     public static void setValue(Object object,String fieldName,Object value){
-        if (object == null || isEmpty(fieldName )) {
+        if (object == null || MockUtils.isEmpty(fieldName )) {
             return;
         }
         try {
@@ -105,7 +106,7 @@ public class UncleMock {
 
     @SuppressWarnings("unchecked")
     public static <T> T getValue(Object object,String fieldName){
-        if (object == null || isEmpty(fieldName )) {
+        if (object == null || MockUtils.isEmpty(fieldName )) {
             throw new IllegalArgumentException("error input");
         }
         if (object instanceof Class){
@@ -244,7 +245,17 @@ public class UncleMock {
         return mMockBuilder.doAnswer(answer);
     }
 
-    private static boolean isEmpty(String input){
-        return input == null || input.equals("");
+    public static void lock() throws InterruptedException {
+        if (mSemaphore != null){
+            mSemaphore.release();
+        }
+        mSemaphore = new Semaphore(0);
+        mSemaphore.tryAcquire(120, TimeUnit.SECONDS);
+    }
+
+    public static void release(){
+        if (mSemaphore != null){
+            mSemaphore.release();
+        }
     }
 }

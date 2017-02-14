@@ -10,7 +10,7 @@ import classDefine.EnumClass;
 import classDefine.FinalClass;
 import classDefine.InstanceClass;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import test.testMockUtils.bean.DependencyClass;
 import utils.UncleMock;
 
@@ -21,10 +21,10 @@ import utils.UncleMock;
 public class TestSpy extends TestInit{
     @Test
     public void test_spy(){
-        CallOrigin unMock = new CallOrigin();
+        SomeClass unMock = new SomeClass();
         DependencyClass dependencyClass = UncleMock.getValue(unMock,"mOne");
         Assert.assertTrue(dependencyClass != null);
-        CallOrigin mock = UncleMock.spy(new CallOrigin());
+        SomeClass mock = UncleMock.spy(new SomeClass());
         DependencyClass dependencyClassInMock = UncleMock.getValue(mock,"mOne");
         Assert.assertTrue(dependencyClassInMock != null);
     }

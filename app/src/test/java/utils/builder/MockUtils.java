@@ -57,23 +57,34 @@ public class MockUtils {
 
     @Nullable
     private static Class getTestOriginClass() {
+        StackTraceElement origin = getCallOrginStackTraceElement();
+        try {
+            return Class.forName(origin.getClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new MockitoAssertionError(e.getMessage());
+        }
+    }
+
+    private static String getCallOrginMethodName(){
+        StackTraceElement origin = getCallOrginStackTraceElement();
+        return origin.getMethodName();
+    }
+
+    @Nullable
+    private static StackTraceElement getCallOrginStackTraceElement() {
         StackTraceElement[] trace = new Exception("").getStackTrace();
-        String testClass = null;
+        StackTraceElement origin = null;
         final int length = trace.length;
         for (int i = 0; i < length; i++) {
             StackTraceElement element = trace[i];
             String name = element.getClassName();
             if (name.equals("sun.reflect.NativeMethodAccessorImpl")) {
-                testClass = trace[i- 1].getClassName();
+                origin = trace[i- 1];
                 break;
             }
         }
-        try {
-            return Class.forName(testClass);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new MockitoAssertionError(e.getMessage());
-        }
+        return origin;
     }
 
 
@@ -84,5 +95,9 @@ public class MockUtils {
         }else{
             checkMocked(object);
         }
+    }
+
+    public static boolean isEmpty(String input){
+        return input == null || input.equals("");
     }
 }

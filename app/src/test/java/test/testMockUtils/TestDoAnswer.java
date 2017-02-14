@@ -6,7 +6,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import utils.UncleMock;
 import utils.builder.IAnswer;
 
@@ -30,15 +30,15 @@ public class TestDoAnswer extends TestInit{
 
     @Test
     public void testObject() throws Exception {
-        CallOrigin origin = PowerMockito.spy(new CallOrigin());
-        origin.callVoid();
+        SomeClass someClass = PowerMockito.spy(new SomeClass());
+        someClass.callVoid();
         UncleMock.doAnswer(new IAnswer() {
             @Override
             public Object answer(final Object[] arguments) {
                 System.out.print("answer");
                 return null;
             }
-        }).when(origin).call("callVoid");
-        origin.callVoid();
+        }).when(someClass).call("callVoid");
+        someClass.callVoid();
     }
 }

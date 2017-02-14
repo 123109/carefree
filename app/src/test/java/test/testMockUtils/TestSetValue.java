@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import base.TestInit;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import utils.UncleMock;
 
 /**
@@ -15,34 +15,34 @@ import utils.UncleMock;
 public class TestSetValue extends TestInit{
     @Test
     public void test_setInObject_normalField(){
-        CallOrigin callOrigin = new CallOrigin();
-        Object object = UncleMock.getValue(callOrigin,"mOne");
+        SomeClass someClass = new SomeClass();
+        Object object = UncleMock.getValue(someClass,"mOne");
         Assert.assertTrue(object != null);
-        UncleMock.setValue(callOrigin,"mOne",null);
-        object = UncleMock.getValue(callOrigin,"mOne");
+        UncleMock.setValue(someClass,"mOne",null);
+        object = UncleMock.getValue(someClass,"mOne");
         Assert.assertTrue(object == null);
     }
 
     @Test
     public void test_setInObject_finalField(){
-        CallOrigin callOrigin = new CallOrigin();
-        int value = callOrigin.getFinalValue();
+        SomeClass someClass = new SomeClass();
+        int value = someClass.getFinalValue();
         Assert.assertTrue(value == 2);
-        UncleMock.setValue(callOrigin,"mFinalValue",3);
+        UncleMock.setValue(someClass,"mFinalValue",3);
         //以下代码说明final的值是不能改变的……
-        value = callOrigin.getFinalValue();
+        value = someClass.getFinalValue();
         Assert.assertTrue(value == 2);
-        int wantedValue = UncleMock.getValue(callOrigin,"mFinalValue");
+        int wantedValue = UncleMock.getValue(someClass,"mFinalValue");
         Assert.assertTrue(wantedValue == 3);
     }
 
     @Test
     public void test_setInObject_staticField(){
-        CallOrigin callOrigin = new CallOrigin();
-        int value = callOrigin.getStaticValue();
+        SomeClass someClass = new SomeClass();
+        int value = someClass.getStaticValue();
         Assert.assertTrue(value == 1);
-        UncleMock.setValue(callOrigin,"mStaticValue",2);
-        value = callOrigin.getStaticValue();
+        UncleMock.setValue(someClass,"mStaticValue",2);
+        value = someClass.getStaticValue();
         Assert.assertTrue(value == 2);
     }
 

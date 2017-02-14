@@ -7,7 +7,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import utils.UncleMock;
 
 /**
@@ -33,7 +33,7 @@ public class TestDoNothing extends TestInit{
 
     @Test
     public void test_object() throws Exception{
-        CallOrigin origin = UncleMock.spy(new CallOrigin());
+        SomeClass origin = UncleMock.spy(new SomeClass());
         origin.callOne();
         origin.callVoid();
         UncleMock.doNothing().when(origin).call("callVoid");

@@ -7,27 +7,27 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import utils.UncleMock;
 import utils.UncleMockException;
 
 /**
  * Created by Administrator on 2017/2/11.
  */
-@PrepareForTest({StaticClass.class,CallOrigin.class})
+@PrepareForTest({StaticClass.class,SomeClass.class})
 public class TestVerify extends TestInit{
     @Test
     public void test_callWithNoArgument() throws Exception {
-        final CallOrigin callOrigin = UncleMock.mock(CallOrigin.class);
-        callOrigin.callVoid();
-        UncleMock.verify(callOrigin,1).call("callVoid");
+        final SomeClass someClass = UncleMock.mock(SomeClass.class);
+        someClass.callVoid();
+        UncleMock.verify(someClass,1).call("callVoid");
     }
 
     @Test
     public void test() throws Exception {
-        final CallOrigin callOrigin = UncleMock.mock(CallOrigin.class);
-        callOrigin.callTwo("1","2");
-        UncleMock.verify(callOrigin,1).call("callTwo","1","2");
+        final SomeClass someClass = UncleMock.mock(SomeClass.class);
+        someClass.callTwo("1","2");
+        UncleMock.verify(someClass,1).call("callTwo","1","2");
     }
 
     @Test
@@ -45,11 +45,11 @@ public class TestVerify extends TestInit{
 
     @Test
     public void testUnMock() throws Exception {
-        final CallOrigin callOrigin = new CallOrigin();
-        callOrigin.callTwo("1","2");
+        final SomeClass someClass = new SomeClass();
+        someClass.callTwo("1","2");
         boolean isError = false;
         try {
-            UncleMock.verify(callOrigin,1).call("callTwo","1","2");
+            UncleMock.verify(someClass,1).call("callTwo","1","2");
         }catch (UncleMockException e){
             e.printStackTrace();
             isError = true;

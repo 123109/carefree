@@ -7,7 +7,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import base.TestInit;
 import classDefine.StaticClass;
-import test.testMockUtils.bean.CallOrigin;
+import test.testMockUtils.bean.SomeClass;
 import utils.UncleMock;
 import utils.builder.IAnswer;
 
@@ -18,14 +18,14 @@ import utils.builder.IAnswer;
 public class TestWhen extends TestInit{
     @Test
     public void testWhen_returnOneValue() throws Exception {
-        final CallOrigin mock = UncleMock.mock(CallOrigin.class);
+        final SomeClass mock = UncleMock.mock(SomeClass.class);
         UncleMock.when(mock).call("callOne").thenReturn("1234");
         Assert.assertTrue(mock.callOne().equals("1234"));
     }
 
     @Test
     public void testWhen_returnTwoValue() throws Exception {
-        final CallOrigin mock = UncleMock.mock(CallOrigin.class);
+        final SomeClass mock = UncleMock.mock(SomeClass.class);
         UncleMock.when(mock).call("callOne").thenReturnValues("1234","1");
         Assert.assertTrue(mock.callOne().equals("1234"));
         Assert.assertTrue(mock.callOne().equals("1"));
@@ -33,7 +33,7 @@ public class TestWhen extends TestInit{
 
     @Test
     public void testWhen_returnTwoValue_secondNull() throws Exception {
-        final CallOrigin mock = UncleMock.mock(CallOrigin.class);
+        final SomeClass mock = UncleMock.mock(SomeClass.class);
         final Object otherValue = null;
         UncleMock.when(mock).call("callOne").thenReturnValues("1234", otherValue);
         Assert.assertTrue(mock.callOne().equals("1234"));
@@ -42,7 +42,7 @@ public class TestWhen extends TestInit{
 
     @Test
     public void testWhen_returnTwoValue_assertThreeTimes() throws Exception {
-        final CallOrigin mock = UncleMock.mock(CallOrigin.class);
+        final SomeClass mock = UncleMock.mock(SomeClass.class);
         UncleMock.when(mock).call("callOne").thenReturnValues("1234","1");
         Assert.assertTrue(mock.callOne().equals("1234"));
         Assert.assertTrue(mock.callOne().equals("1"));
@@ -59,14 +59,14 @@ public class TestWhen extends TestInit{
 
     @Test
     public void  testWhen_withArgument() throws Exception {
-        CallOrigin mock  = UncleMock.mock(CallOrigin.class);
+        SomeClass mock  = UncleMock.mock(SomeClass.class);
         UncleMock.when(mock).call("callTwo","1","2").thenReturn("test");
         Assert.assertTrue(mock.callTwo("1","2").equals("test"));
     }
 
     @Test
     public void  testWhen_withArgument_any() throws Exception {
-        CallOrigin mock  = UncleMock.mock(CallOrigin.class);
+        SomeClass mock  = UncleMock.mock(SomeClass.class);
         UncleMock.when(mock).call("callTwo",Mockito.anyString(),Mockito.anyString()).thenReturn("test");
         Assert.assertTrue(mock.callTwo("1","2").equals("test"));
         Assert.assertTrue(mock.callTwo("1ttttt","2").equals("test"));
