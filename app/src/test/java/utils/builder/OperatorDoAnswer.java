@@ -9,10 +9,10 @@ import org.powermock.api.mockito.expectation.PowerMockitoStubber;
  * Created by Administrator on 2017/2/12.
  */
 
-public class DoAnswerBuilder {
+public class OperatorDoAnswer {
     private IAnswer mAnswer;
 
-    DoAnswerBuilder(final IAnswer answer) {
+    OperatorDoAnswer(final IAnswer answer) {
         mAnswer = answer;
     }
 

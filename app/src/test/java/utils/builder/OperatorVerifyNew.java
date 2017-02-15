@@ -10,10 +10,10 @@ import utils.UncleMockException;
 /**
  * Created by Administrator on 2017/2/12.
  */
-public class VerifyNewBuilder{
+public class OperatorVerifyNew {
     ConstructorArgumentsVerification mVerification;
     boolean mIsKnown;
-    VerifyNewBuilder(Class tClass,int times) {
+    OperatorVerifyNew(Class tClass, int times) {
         try {
             mVerification = PowerMockito.verifyNew(tClass, Mockito.times(times));
         }catch (IllegalStateException e){
@@ -30,7 +30,7 @@ public class VerifyNewBuilder{
         }
     }
 
-    public VerifyNewBuilder justDoIt(){
+    public OperatorVerifyNew justDoIt(){
         mIsKnown = true;
         return this;
     }

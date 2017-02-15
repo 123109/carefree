@@ -12,22 +12,22 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import utils.builder.DoAnswerBuilder;
-import utils.builder.DoNothingBuilder;
+import utils.builder.OperatorDoAnswer;
+import utils.builder.OperatorDoNothing;
 import utils.builder.IAnswer;
-import utils.builder.MockBuilder;
+import utils.builder.MockOperator;
 import utils.builder.MockUtils;
-import utils.builder.VerifyBuilder;
-import utils.builder.VerifyNewBuilder;
-import utils.builder.WhenBuilder;
-import utils.builder.WhenNewBuilder;
+import utils.builder.OperatorVerify;
+import utils.builder.OperatorVerifyNew;
+import utils.builder.OperatorWhen;
+import utils.builder.OperatorWhenNew;
 
 /**
  * Created by Administrator on 2017/2/9.
  */
 public class UncleMock {
 
-    private static MockBuilder mMockBuilder = Whitebox.newInstance(MockBuilder.class);
+    private static MockOperator mMockOperator = Whitebox.newInstance(MockOperator.class);
     private static Semaphore mSemaphore;
     public static <T> T mock(Class<T> tClass){
         if (tClass == null) {
@@ -221,28 +221,28 @@ public class UncleMock {
     }
 
 
-    public static <T> WhenBuilder<T> when(Object object){
-        return mMockBuilder.when(object);
+    public static <T> OperatorWhen<T> when(Object object){
+        return mMockOperator.when(object);
     }
 
-    public static <T> WhenNewBuilder<T> whenNew(Class<T> tClass){
-        return mMockBuilder.whenNew(tClass);
+    public static <T> OperatorWhenNew<T> whenNew(Class<T> tClass){
+        return mMockOperator.whenNew(tClass);
     }
 
-    public static VerifyBuilder verify(Object object, int times) throws Exception {
-        return mMockBuilder.verify(object,times);
+    public static OperatorVerify verify(Object object, int times) throws Exception {
+        return mMockOperator.verify(object,times);
     }
 
-    public static <T> VerifyNewBuilder verifyNew(Class<T> tClass, int times){
-        return mMockBuilder.verifyNew(tClass,times);
+    public static <T> OperatorVerifyNew verifyNew(Class<T> tClass, int times){
+        return mMockOperator.verifyNew(tClass,times);
     }
 
-    public static DoNothingBuilder doNothing(){
-        return mMockBuilder.doNothing();
+    public static OperatorDoNothing doNothing(){
+        return mMockOperator.doNothing();
     }
 
-    public static DoAnswerBuilder doAnswer(IAnswer answer){
-        return mMockBuilder.doAnswer(answer);
+    public static OperatorDoAnswer doAnswer(IAnswer answer){
+        return mMockOperator.doAnswer(answer);
     }
 
     public static void lock() throws InterruptedException {

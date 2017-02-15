@@ -6,9 +6,9 @@ package utils.builder;
 
 public class ConstructorArgumentBuilder<T> extends ReturnBuilder<T>{
 
-    private WhenNewBuilder<T> mBuilder;
+    private OperatorWhenNew<T> mBuilder;
 
-    ConstructorArgumentBuilder(WhenNewBuilder<T> builder){
+    ConstructorArgumentBuilder(OperatorWhenNew<T> builder){
         super(builder);
         mBuilder = builder;
     }

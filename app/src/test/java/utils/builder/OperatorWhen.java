@@ -9,12 +9,12 @@ import org.powermock.api.mockito.PowerMockito;
  * Created by Administrator on 2017/2/11.
  */
 
-public class WhenBuilder<T> extends Returnable<T> {
+public class OperatorWhen<T> extends Returnable<T> {
 
     private OngoingStubbing<T> when;
     private Object mObject;
 
-    WhenBuilder(final Object object) {
+    OperatorWhen(final Object object) {
         mObject = object;
     }
 

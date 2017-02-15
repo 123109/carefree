@@ -8,10 +8,10 @@ import org.powermock.api.mockito.verification.PrivateMethodVerification;
  * Created by Administrator on 2017/2/11.
  */
 
-public class VerifyBuilder{
+public class OperatorVerify {
 
     private PrivateMethodVerification privateMethodVerification;
-    VerifyBuilder(Object object,int times) throws Exception {
+    OperatorVerify(Object object, int times) throws Exception {
         if (object instanceof Class){
             privateMethodVerification = PowerMockito.verifyPrivate(((Class) object), Mockito.times(times));
         }else {

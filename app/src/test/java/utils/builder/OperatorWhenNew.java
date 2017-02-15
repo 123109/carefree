@@ -11,10 +11,10 @@ import org.powermock.api.mockito.PowerMockito;
  * Created by Administrator on 2017/2/10.
  */
 
-public class WhenNewBuilder<T> extends Returnable<T> {
+public class OperatorWhenNew<T> extends Returnable<T> {
     private OngoingStubbing<T> mSetup;
     private Class<T> mClass;
-    WhenNewBuilder(Class<T> tClass) {
+    OperatorWhenNew(Class<T> tClass) {
         mClass = tClass;
     }
 
