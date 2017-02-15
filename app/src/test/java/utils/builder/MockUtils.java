@@ -75,8 +75,7 @@ public class MockUtils {
             String name = mock.getName();
             for (String s : fullyQualified) {
                 if (s.contains(".*")){
-                    s = s.replace(".*","");
-                    if (name.contains(s)){
+                    if (name.contains(s.replace(".*",""))){
                         return;
                     }
                 }else{
@@ -84,7 +83,6 @@ public class MockUtils {
                         return;
                     }
                 }
-
             }
         }
         throw new UncleMockException("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
