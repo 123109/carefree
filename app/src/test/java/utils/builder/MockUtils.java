@@ -23,14 +23,14 @@ import utils.UncleMockException;
  */
 
 public class MockUtils {
-    static void checkStaticMock(final Class mock) {
+    private static void checkStaticMock(final Class mock) {
         Map<Class<?>, MethodInvocationControl> classMocks = Whitebox.getInternalState(MockRepository.class,"classMocks",MockRepository.class);
         if (!classMocks.containsKey(mock)){
             throw new UncleMockException("\n\n静态方法要先调用MockUtils.mockStatic("+mock.getSimpleName()+".class)");
         }
     }
 
-    static void checkMocked(Object object){
+    private static void checkMocked(Object object){
         Class clazz = object.getClass();
         ClassLoader classloader = clazz .getClassLoader();
         if (!(classloader instanceof SearchingClassLoader)){
@@ -71,6 +71,21 @@ public class MockUtils {
                     return;
                 }
             }
+            String[] fullyQualified = test.fullyQualifiedNames();
+            String name = mock.getName();
+            for (String s : fullyQualified) {
+                if (s.contains(".*")){
+                    s = s.replace(".*","");
+                    if (name.contains(s)){
+                        return;
+                    }
+                }else{
+                    if (name.equals(s)){
+                        return;
+                    }
+                }
+
+            }
         }
         throw new UncleMockException("\n\n请在"+from.getSimpleName()+"类声明处添加以下注解\n" +
                 "\"@PrepareForTest("+mock.getSimpleName()+".class)\"，\n" +
@@ -79,7 +94,7 @@ public class MockUtils {
 
     @Nullable
     private static Class getTestOriginClass() {
-        StackTraceElement origin = getCallOrginStackTraceElement();
+        StackTraceElement origin = getCallOriginStackTraceElement();
         try {
             return Class.forName(origin.getClassName());
         } catch (ClassNotFoundException e) {
@@ -89,12 +104,12 @@ public class MockUtils {
     }
 
     private static String getCallOrginMethodName(){
-        StackTraceElement origin = getCallOrginStackTraceElement();
+        StackTraceElement origin = getCallOriginStackTraceElement();
         return origin.getMethodName();
     }
 
     @Nullable
-    private static StackTraceElement getCallOrginStackTraceElement() {
+    private static StackTraceElement getCallOriginStackTraceElement() {
         StackTraceElement[] trace = new Exception("").getStackTrace();
         StackTraceElement origin = null;
         final int length = trace.length;
@@ -110,7 +125,7 @@ public class MockUtils {
     }
 
 
-    public static void check(Object object){
+    static void check(Object object){
         if (object instanceof Class){
             //要测试一个静态方法
             checkStaticMock((Class) object);

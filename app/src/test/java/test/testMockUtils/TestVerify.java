@@ -14,8 +14,10 @@ import utils.UncleMockException;
 /**
  * Created by Administrator on 2017/2/11.
  */
-@PrepareForTest({StaticClass.class,SomeClass.class})
+@PrepareForTest(fullyQualifiedNames = "classDefine.*")
 public class TestVerify extends TestInit{
+
+
     @Test
     public void test_callWithNoArgument() throws Exception {
         final SomeClass someClass = UncleMock.mock(SomeClass.class);
